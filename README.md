@@ -21,6 +21,8 @@ Supports TSLint.
 
 `npm i -g typescript-batch-compiler typescript`
 
+Expects a tslint.json in the root of the project.
+
 
 # Development
 
