@@ -1,0 +1,29 @@
+{
+  "name": "typescript-batch-compiler",
+  "version": "0.1.0",
+  "description": "Compile a batch of TypeScript files with individual scopes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdvanes/typescript-batch-compiler.git"
+  },
+  "keywords": [
+    "typescript",
+    "polymer"
+  ],
+  "author": "M.D. van Es",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdvanes/typescript-batch-compiler/issues"
+  },
+  "homepage": "https://github.com/mdvanes/typescript-batch-compiler#readme",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "node-typescript-compiler": "^1.1.1",
+    "tslint": "^5.8.0",
+    "watch": "^1.0.2"
+  }
+}
