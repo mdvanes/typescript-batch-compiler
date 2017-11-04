@@ -1,5 +1,7 @@
 /**
  * The test should test if two files that both contain `declare const Polymer: any;` can be build.
+ * TODO implement automated test case and second ts file
+ * TODO fix lint errors
  */
 
 declare const Polymer: any;
