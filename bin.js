@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-const typescriptBatchCompiler = require('./')();
+const typescriptBatchCompiler = require('./');
