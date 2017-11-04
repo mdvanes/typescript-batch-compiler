@@ -24,6 +24,10 @@
     "chalk": "^2.3.0",
     "node-typescript-compiler": "^1.1.1",
     "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
     "watch": "^1.0.2"
+  },
+  "peerDependencies": {
+    "typescript": ">=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev"
   }
 }

@@ -11,4 +11,14 @@ This is particularly convenient when building Polymer 2 components with TypeScri
 Polymer component and are not one shared project. For more information 
 read [this article](https://github.com/mdvanes/polygram/blob/TypeScript/BLOG.md) (work in progress).
 
-Supports TSLint. 
+Supports TSLint.
+
+
+# Installation
+
+`npm i -g typescript-batch-compiler typescript`
+
+
+# Development
+
+Run `node index.js`.
