@@ -1,7 +1,6 @@
 /**
  * The test should test if two files that both contain `declare const Polymer: any;` can be build.
- * TODO implement automated test case and second ts file
- * TODO fix lint errors
+ * TODO implement automated test case
  */
 
 declare const Polymer: any;
@@ -22,13 +21,15 @@ class PolygramDetails extends Polymer.Element {
         };
     }
 
-    _bar(term) {
-        const amount:number = 1;
+    public bar(term) {
+        const amount: number = 1;
+        /* tslint:disable */
         console.log(term.repeat(amount));
+        /* tslint:enable */
     }
 
     @readonly
-    foo() {
+    public foo() {
         // This works, but prepends a polyfill to the output
         return 'just testing a decorator';
     }
