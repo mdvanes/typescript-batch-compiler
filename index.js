@@ -3,6 +3,7 @@ const watch = require('watch');
 const path = require('path');
 const chalk = require('chalk');
 const tsc = require('node-typescript-compiler');
+const recursive = require('recursive-readdir');
 
 // TODO improvement: read from tsconfig.json
 const compileOptions = {
@@ -46,31 +47,47 @@ function compileTs(path) {
     // tsc --target ES6 --sourceMap [changedFile]
     tsc.compile(compileOptions, path)
         .then(_ => {
-        if(isLintEnabled) {
-            const failures = lintTs(path);
-            failures.forEach(r => console.log(chalk.yellow.bold(r)));
-            if(failOnLint && failures.length > 0) {
-                throw new Error('stopped because failOnLint is on and there were linting errors')
+            if(isLintEnabled) {
+                const failures = lintTs(path);
+                failures.forEach(r => console.log(chalk.yellow.bold(r)));
+                if(failOnLint && failures.length > 0) {
+                    throw new Error('stopped because failOnLint is on and there were linting errors')
+                }
             }
+        })
+        .then(_ => console.log(chalk.green.bold(`👍${path}`)))
+        .catch(err => {
+                let message = err;
+                if(err.stdout) {
+                    message = err.stdout;
+                }
+                console.log(chalk.red(message));
+            });
         }
-    })
-.then(_ => console.log(chalk.green.bold(`👍${path}`)))
-.catch(err => {
-        let message = err;
-    if(err.stdout) {
-        message = err.stdout;
-    }
-    console.log(chalk.red(message))
-});
-}
 
 function typescriptBatchCompiler() {
     if(argv.length === 1 && argv[0] === '-v') {
+        // Log version
         const package = require('./package.json');
         console.log(`${package.name}@${package.version}`);
+    } else if(argv.length === 1 && argv[0] === '-b') {
+        // Build, i.e. run once for all ts files (in current working dir)
+        // const package = require('./package.json');
+        // console.log(`${package.name}@${package.version}`);
+        // TODO make recursive
+        fs.readdir(process.cwd() + '/test/fixtures', (err, files) => {
+            if(err) {
+                console.error('Failure traversing dir: ' + err);
+            } else {
+                files
+                    .filter(filePath => path.extname(filePath) === '.ts')
+                    .forEach(filePath => compileTs(process.cwd() + '/test/fixtures' + '/' + filePath));
+            }
+        })
     } else {
         watch.createMonitor(process.cwd(), { interval: 1 }, function (monitor) {
             console.log(chalk.gray.bgGreen.bold('TS-POLY-WATCH started'));
+
 
             monitor.on('changed', function (filePath, curr, prev) {
                 const ext = path.extname(filePath);
