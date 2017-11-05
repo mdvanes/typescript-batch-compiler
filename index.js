@@ -23,6 +23,8 @@ const lintOptions = {
     // formattersDirectory: "customFormatters/"
 };
 
+const argv = process.argv.slice(2);
+
 function lintTs(path) {
     const fileName = path;
     const fileContents = fs.readFileSync(fileName, 'utf8');
@@ -63,26 +65,31 @@ function compileTs(path) {
 }
 
 function typescriptBatchCompiler() {
-    watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
-        console.log(chalk.gray.bgGreen.bold('TS-POLY-WATCH started'));
+    if(argv.length === 1 && argv[0] === '-v') {
+        const package = require('./package.json');
+        console.log(`${package.name}@${package.version}`);
+    } else {
+        watch.createMonitor(process.cwd(), { interval: 1 }, function (monitor) {
+            console.log(chalk.gray.bgGreen.bold('TS-POLY-WATCH started'));
 
-        monitor.on('changed', function (filePath, curr, prev) {
-            const ext = path.extname(filePath);
-            if(ext === '.ts') {
-                console.log(`↻ ${filePath} changed`);
-                // TODO Alternatively, see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
-                compileTs(filePath);
-            }
+            monitor.on('changed', function (filePath, curr, prev) {
+                const ext = path.extname(filePath);
+                if(ext === '.ts') {
+                    console.log(`↻ ${filePath} changed`);
+                    // TODO Alternatively, see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
+                    compileTs(filePath);
+                }
+            });
+
+            // monitor.on("created", function (f, stat) {
+            //     console.log(f + " created");
+            // });
+
+            // monitor.on("removed", function (f, stat) {
+            //     console.log(f + " removed");
+            // });
         });
-
-        // monitor.on("created", function (f, stat) {
-        //     console.log(f + " created");
-        // });
-
-        // monitor.on("removed", function (f, stat) {
-        //     console.log(f + " removed");
-        // });
-    });
+    }
 }
 
 module.exports = typescriptBatchCompiler();
