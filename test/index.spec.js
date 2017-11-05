@@ -1,11 +1,20 @@
 const path = require('path');
 const fs = require('fs');
+const { exec } = require('child_process');
 
 exports.typescriptBatchCompiler = {
     setUp: function (done) {
         // TODO clean
-        // TODO execute `node index.js -b`
-        done();
+        fs.unlink('fixtures/example1.js');
+        exec('node index.js -b', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+            done();
+        });
     },
     firstExampleFile: function(test) {
         // test.expect(1);
@@ -19,7 +28,9 @@ exports.typescriptBatchCompiler = {
         test.done();
     },
     secondExampleFile: function(test) {
-        console.log('secondExampleFile');
+        const actual = fs.readFileSync(path.join(__dirname, 'fixtures/example2.js'), {encoding: 'utf-8'});
+        const expected = fs.readFileSync(path.join(__dirname, 'expected/example2.js'), {encoding: 'utf-8'});
+        test.equal(actual, expected, 'should compile example2');
         test.done();
     }
 };
