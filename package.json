@@ -2,9 +2,9 @@
   "name": "typescript-batch-compiler",
   "version": "0.3.0",
   "description": "Compile a batch of TypeScript files with individual scopes",
-  "main": "typescript-batch-compiler.js",
+  "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/nodeunit test/typescript-batch-compiler.spec.js"
+    "test": "./node_modules/.bin/nodeunit test/index.spec.js"
   },
   "repository": {
     "type": "git",

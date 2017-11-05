@@ -1,6 +1,5 @@
 /**
  * The test should test if two files that both contain `declare const Polymer: any;` can be build.
- * TODO implement automated test case
  */
 
 declare const Polymer: any;
