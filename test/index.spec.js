@@ -1,23 +1,30 @@
 const path = require('path');
 const fs = require('fs');
+const del = require('del');
 const { exec } = require('child_process');
 
 exports.typescriptBatchCompiler = {
     setUp: function (done) {
-        // TODO clean
-        fs.unlink('fixtures/example1.js');
-        exec('node index.js -b', (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
-            done();
-        });
+        del(['test/fixtures/*.js', 'test/fixtures/*.js.map'])
+            .then(paths => {
+                console.log('Deleted files and folders:\n', paths.join('\n'));
+                exec('node index.js -b', (error, stdout, stderr) => {
+                    // TODO promisify would be better
+                    if (error) {
+                        console.error(`exec error: ${error}`);
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                    console.log(`stderr: ${stderr}`);
+                    done();
+                });
+            })
+            .catch(err => {
+                console.log('Can not delete: ' + err);
+                done();
+            });
     },
     firstExampleFile: function(test) {
-        // test.expect(1);
         // Don't filter out linebreaks here, because in that case you can't test for linebreaks in the correct place.
         // If the test fails because of linebreaks, check if the "expected" fixture is saved with LF linebreaks only, not CRLF.
         const actual = fs.readFileSync(path.join(__dirname, 'fixtures/example1.js'), {encoding: 'utf-8'});
