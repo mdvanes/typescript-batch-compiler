@@ -65,6 +65,10 @@ function compileTs(path) {
             });
         }
 
+function ignoreFiles(file, stats) {
+    return stats.isDirectory() && path.basename(file) === 'node_modules';
+}
+
 function typescriptBatchCompiler() {
     if(argv.length === 1 && argv[0] === '-v') {
         // Log version
@@ -74,14 +78,16 @@ function typescriptBatchCompiler() {
         // Build, i.e. run once for all ts files (in current working dir)
         // const package = require('./package.json');
         // console.log(`${package.name}@${package.version}`);
-        // TODO make recursive
-        fs.readdir(process.cwd() + '/test/fixtures', (err, files) => {
+        // TODO make ignoreFiles configurable and also apply for watch
+        recursive(process.cwd(), [ignoreFiles], (err, files) => {
             if(err) {
                 console.error('Failure traversing dir: ' + err);
             } else {
+                //console.log(files);
                 files
                     .filter(filePath => path.extname(filePath) === '.ts')
-                    .forEach(filePath => compileTs(process.cwd() + '/test/fixtures' + '/' + filePath));
+                    //.forEach(filePath => console.log(filePath))
+                    .forEach(filePath => compileTs(filePath));
             }
         })
     } else {
