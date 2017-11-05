@@ -2,10 +2,11 @@ const path = require('path');
 const fs = require('fs');
 
 exports.typescriptBatchCompiler = {
-    // setUp: function (done) {
-    //     // setup here if necessary
-    //     done();
-    // },
+    setUp: function (done) {
+        // TODO clean
+        // TODO execute `node index.js -b`
+        done();
+    },
     firstExampleFile: function(test) {
         // test.expect(1);
         // Don't filter out linebreaks here, because in that case you can't test for linebreaks in the correct place.

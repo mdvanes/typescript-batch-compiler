@@ -76,24 +76,19 @@ function typescriptBatchCompiler() {
         console.log(`${package.name}@${package.version}`);
     } else if(argv.length === 1 && argv[0] === '-b') {
         // Build, i.e. run once for all ts files (in current working dir)
-        // const package = require('./package.json');
-        // console.log(`${package.name}@${package.version}`);
         // TODO make ignoreFiles configurable and also apply for watch
-        recursive(process.cwd(), [ignoreFiles], (err, files) => {
-            if(err) {
-                console.error('Failure traversing dir: ' + err);
-            } else {
-                //console.log(files);
+        recursive(process.cwd(), [ignoreFiles])
+            .then(files => {
                 files
                     .filter(filePath => path.extname(filePath) === '.ts')
-                    //.forEach(filePath => console.log(filePath))
                     .forEach(filePath => compileTs(filePath));
-            }
-        })
+            })
+            .catch(err => {
+                console.error('Failure traversing dir: ' + err);
+            });
     } else {
         watch.createMonitor(process.cwd(), { interval: 1 }, function (monitor) {
             console.log(chalk.gray.bgGreen.bold('TS-POLY-WATCH started'));
-
 
             monitor.on('changed', function (filePath, curr, prev) {
                 const ext = path.extname(filePath);
