@@ -23,6 +23,13 @@ Supports TSLint.
 
 Expects a tslint.json in the root of the project.
 
+Run with `typescript-batch-compiler`.
+
+If installed in project scope with `npm i typescript-batch-compiler typescript` run with `./node_modules/.bin/typescript-batch-compiler`
+
+flags:
+
+* `-v` logs the version
 
 # Development
 
