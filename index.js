@@ -66,7 +66,7 @@ function compileTs(path) {
         }
 
 function ignoreFiles(file, stats) {
-    return stats.isDirectory() && path.basename(file) === 'node_modules';
+    return stats.isDirectory() && (path.basename(file) === 'node_modules' || path.basename(file) === 'bower_components');
 }
 
 function typescriptBatchCompiler() {
